@@ -1,0 +1,8 @@
+[package]
+name = "grig-core"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+sha3 = "0.10"
+zeroize = "1"
