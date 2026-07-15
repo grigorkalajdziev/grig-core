@@ -2,7 +2,7 @@ use grig_core::{grig_hash, Params};
 
 fn main() {
 
-    let password = b"password123";
+    let password = b"password456";
     let salt = b"salty";
 
     let params = Params {
