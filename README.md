@@ -112,15 +112,22 @@ Goal:
 
 ## Performance Benchmarks
 
-Below is the current benchmark for the `grig_hash` function (1024 blocks, 3 rounds):
+The `grig_hash` function has been benchmarked with 1024 blocks and 3 rounds.
 
-![grig_hash performance](assets/grig_hash_results.png)
-![grig_hash performance](assets/grig_hash_results2.png)
+### Current Metrics
+![Performance Metrics](assets/grig_hash_results.png)
 
-| Metric | Result |
-| :--- | :--- |
-| **Median Time** | 8.3369 ms |
-| **Outliers** | 20.00% |
+| Metric | Estimate | Interval (Lower / Upper Bound) |
+| :--- | :--- | :--- |
+| **Mean** | 6.4066 ms | 6.2532 ms / 6.5957 ms |
+| **Median** | 6.1860 ms | 6.1234 ms / 6.2458 ms |
+| **Std. Dev.** | 885.58 µs | 434.12 µs / 1.2541 ms |
+
+### Comparison to Previous Run
+![Comparison](assets/grig_hash_results2.png)
+
+🚀 **Performance has improved significantly!** 
+The current run shows a performance improvement of **-22.577%** ($p = 0.00 < 0.05$) compared to the previous benchmark. 
 
 *Benchmarks were generated using [Criterion.rs](https://github.com/bheisler/criterion.rs).*
 
