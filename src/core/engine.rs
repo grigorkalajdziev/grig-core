@@ -1,6 +1,6 @@
 use crate::{
     core::{params::Params, state::State},
-    crypto::mixer::Mixer,
+    crypto::mixer,
     graph::generator::GraphGenerator,
     memory::matrix::MemoryMatrix,
 };
@@ -15,22 +15,27 @@ impl Engine {
     }
 
     pub fn run(&self, password: &[u8], salt: &[u8]) -> Vec<u8> {
-        let mut state = State::initialize(password, salt, &self.params);
-        let mut memory = MemoryMatrix::new(self.params.blocks);
+        let mut state = State::new(password, salt);
+        let mut memory = MemoryMatrix::new(self.params.blocks, 64);
 
-        let graph = GraphGenerator::new(self.params.clone());
-        let mixer = Mixer::new();
+        let graph = GraphGenerator {
+            parents: self.params.parents,
+        };
 
         for _round in 0..self.params.rounds {
             for i in 0..self.params.blocks {
-                let parents = graph.parents(i, &state, &memory);
-                let block = mixer.mix(&parents, &state);
+                let parent_idx = graph.select(i, state.as_bytes(), self.params.blocks);
 
-                memory.set(i, block);
-                state.update(&memory, i);
+                let inputs: Vec<&[u8]> =
+                    parent_idx.iter().map(|&p| memory.get(p)).collect();
+
+                let block = mixer::mix(&inputs, state.as_bytes(), i);
+
+                memory.set(i, block.clone());
+                state.update(&block, i);
             }
         }
 
-        state.finalize()
+        state.as_bytes().to_vec()
     }
 }

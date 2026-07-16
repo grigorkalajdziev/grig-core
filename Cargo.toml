@@ -8,6 +8,7 @@ license = "MIT"
 sha3 = "0.10"
 zeroize = "1"
 criterion = "0.4"
+blake2 = "0.10.6"
 
 [[bench]]
 name = "grig_bench"

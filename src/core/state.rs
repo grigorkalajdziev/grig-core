@@ -1,34 +1,30 @@
-use sha3::{Digest, Sha3_512};
+use crate::crypto::hash;
 
 pub struct State {
-    internal: Vec<u8>,
+    value: Vec<u8>,
 }
 
 impl State {
-    pub fn initialize(password: &[u8], salt: &[u8], _params: &super::params::Params) -> Self {
-        let mut hasher = Sha3_512::new();
-        hasher.update(password);
-        hasher.update(salt);
-        
-        Self { 
-            internal: hasher.finalize().to_vec() 
+    pub fn new(password: &[u8], salt: &[u8]) -> Self {
+        let mut init = Vec::new();
+        init.extend_from_slice(password);
+        init.extend_from_slice(salt);
+
+        Self {
+            value: hash::hash(&init),
         }
     }
 
-    pub fn update(&mut self, memory: &crate::memory::matrix::MemoryMatrix, index: usize) {
-        let mut hasher = Sha3_512::new();
-        hasher.update(&self.internal);
-        hasher.update(memory.get(index));
-        
-        self.internal = hasher.finalize().to_vec();
+    pub fn update(&mut self, block: &[u8], index: usize) {
+        let mut data = Vec::new();
+        data.extend_from_slice(&self.value);
+        data.extend_from_slice(block);
+        data.extend_from_slice(&index.to_le_bytes());
+
+        self.value = hash::hash(&data);
     }
 
-    // NEW: Allow other modules to read the state without consuming it
     pub fn as_bytes(&self) -> &[u8] {
-        &self.internal
-    }
-
-    pub fn finalize(self) -> Vec<u8> {
-        self.internal
+        &self.value
     }
 }

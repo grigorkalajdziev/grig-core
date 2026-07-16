@@ -1,1 +1,0 @@
-// Placeholder for access pattern / permutation layer

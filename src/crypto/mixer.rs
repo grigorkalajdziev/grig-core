@@ -1,23 +1,14 @@
-use crate::core::state::State;
-use sha3::{Digest, Sha3_512};
+use blake2::{Blake2b512, Digest};
 
-pub struct Mixer;
+pub fn mix(inputs: &[&[u8]], state: &[u8], index: usize) -> Vec<u8> {
+    let mut hasher = Blake2b512::new();
 
-impl Mixer {
-    pub fn new() -> Self {
-        Self
+    for input in inputs {
+        hasher.update(input);
     }
 
-    pub fn mix(&self, inputs: &[Vec<u8>], state: &State) -> Vec<u8> {
-        let mut hasher = Sha3_512::new();
-        
-        // FIX: Read the bytes safely without taking ownership of the State
-        hasher.update(state.as_bytes());
+    hasher.update(state);
+    hasher.update(index.to_le_bytes());
 
-        for input in inputs {
-            hasher.update(input);
-        }
-
-        hasher.finalize().to_vec()
-    }
+    hasher.finalize().to_vec()
 }
