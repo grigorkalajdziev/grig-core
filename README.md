@@ -110,6 +110,20 @@ Goal:
 | Side-channel resistance | Medium | Targeted |
 | Graph evolution | Static | Dynamic |
 
+## Performance Benchmarks
+
+Below is the current benchmark for the `grig_hash` function (1024 blocks, 3 rounds):
+
+![grig_hash performance](assets/grig_hash_results.png)
+![grig_hash performance](assets/grig_hash_results2.png)
+
+| Metric | Result |
+| :--- | :--- |
+| **Median Time** | 8.3369 ms |
+| **Outliers** | 20.00% |
+
+*Benchmarks were generated using [Criterion.rs](https://github.com/bheisler/criterion.rs).*
+
 ---
 
 ## Repository Structure
