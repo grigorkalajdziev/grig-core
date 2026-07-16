@@ -1,0 +1,1 @@
+// Placeholder for underlying cryptographic hash functions (e.g., Keccak/SHA3 integrations)

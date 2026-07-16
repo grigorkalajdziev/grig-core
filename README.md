@@ -1,55 +1,142 @@
 # Grig (Research Prototype)
 
-> ⚠️ **WARNING:** This is a research prototype and **MUST NOT** be used in production systems. It has NOT been cryptographically reviewed, formally analyzed, or tested against real attackers. Use at your own risk.
+⚠️ **WARNING:**  
+This is a research prototype and MUST NOT be used in production systems.  
+It has NOT been cryptographically reviewed, formally analyzed, or tested against real attackers.
+
+---
 
 ## Overview
 
-Grig is a proposed research framework for a next-generation memory-hard function (MHF) designed for password hashing. It explores the combination of dynamic, state-dependent memory graphs with leakage-resistant memory access techniques. 
+Grig is an experimental framework for a next-generation **memory-hard function (MHF)** designed for password hashing.
 
-While modern systems like Argon2id provide an excellent balance between memory hardness and side-channel resistance, a fundamental tension remains between data-dependent hardness and data-independent leakage protection. Grig aims to address this gap.
+It explores a novel direction:
+- Dynamic, state-dependent memory graphs
+- Hidden logical dependencies
+- Reduced observable memory access leakage
+
+Modern designs like Argon2id provide strong security, but a fundamental tension remains:
+
+> Data-dependent access (strong hardness) vs. data-independent access (side-channel safety)
+
+Grig attempts to partially decouple these properties.
+
+---
+
+## Threat Model
+
+Grig assumes an adversary with:
+
+- Full knowledge of the algorithm
+- Ability to perform offline password guessing
+- Access to GPU / ASIC acceleration
+- Capability to observe memory access patterns (side-channel attacker)
+
+Out of scope:
+
+- Physical attacks
+- Fault injection
+- Microarchitectural exploits (e.g. speculative execution)
+
+---
 
 ## Design Goals
 
-*   **Strong memory hardness** to significantly increase the cost of password guessing attacks.
-*   **Dynamic dependency evolution** to thwart algorithmic optimizations.
-*   **Reduced observable leakage:** Separating logical dependencies from physical memory observations using hidden selection mechanisms and fixed access schedules.
-*   **Hardware Resistance:** Mitigate risks from GPU, ASIC, and time-memory tradeoff (TMTO) optimizations.
+- Strong memory hardness
+- Dynamic dependency evolution
+- Reduced observable leakage
+- Resistance to GPU / ASIC optimizations
+- Mitigation of time-memory tradeoffs (TMTO)
+
+---
 
 ## Architecture
 
-The computation is represented as a dynamic directed graph $G = (V,E)$, where nodes represent memory blocks and edges represent cryptographic dependencies.
+The computation is modeled as a dynamic directed graph:
 
-The graph evolves progressively based on the internal cryptographic state $S(t)$:
+G = (V, E)
 
-$$G(t+1) = F(G(t), S(t))$$
+Where:
+- V = memory blocks
+- E = cryptographic dependencies
 
-### Core Components
+Graph evolution:
 
-*   **Memory Block:** Represents a fixed-size memory unit.
-*   **State:** Maintains the evolving internal cryptographic state.
-*   **Graph:** Generates dynamic node dependencies.
-*   **Mixer:** Combines parent blocks and state into new memory blocks.
-*   **Permutation Layer:** Experiments with hiding physical memory access patterns.
+G(t+1) = F(G(t), S(t))
 
-## Algorithm Flow
+---
 
-1.  **Initialization:** Establish the initial state using a cryptographic hash:
-    $$S_0 = H(\text{password} \parallel \text{salt} \parallel \text{parameters})$$
-2.  **Memory Expansion:** Generate $N$ memory blocks.
-3.  **Graph Generation:** Create dynamic node dependencies using the cryptographic state.
-4.  **Mixing:** Update memory blocks using parent dependencies.
-5.  **State Evolution:** Produce the next internal state after rounds.
-6.  **Finalization:** Generate the final password hash output.
+## Core Components
 
-## Engineering & Implementation
+- **Memory Block** – Fixed-size memory unit
+- **State** – Internal evolving cryptographic state
+- **Graph** – Generates dynamic dependencies
+- **Mixer** – Combines parent blocks + state
+- **Permutation Layer** – Obfuscates observable memory access patterns
 
-Rust is the primary implementation language due to its guarantees of memory safety and systems-level performance. C may be utilized later for low-level hardware optimization.
+---
 
-### Repository Structure
+## Algorithm (Simplified)
 
-```text
+S0 = H(password || salt || params)
+
+for t in rounds:
+parents = Graph.select(S_t)
+block = Mixer(parents, S_t)
+memory[i] = block
+S_t+1 = update(S_t, block)
+
+output = Finalize(S)
+
+## Key Idea
+
+Grig separates:
+
+- Logical dependency graph (hidden)
+- Physical memory access pattern (observable)
+
+Goal:
+
+> Preserve memory hardness while reducing leakage from access patterns
+
+---
+
+## Comparison
+
+| Property | Argon2id | Grig |
+|--------|--------|------|
+| Memory-hard | ✅ | ✅ |
+| Data-dependent | Partial | Dynamic |
+| Side-channel resistance | Medium | Targeted |
+| Graph evolution | Static | Dynamic |
+
+---
+
+## Repository Structure
 grig/
-├── grig-core/       # Core Rust hashing library
-├── benchmarks/      # Performance evaluation tools
-├── tests/           # Testing suite
-└── documentation/   # Academic drafts and specifications
+├── grig-core/ # Core Rust hashing implementation
+├── benchmarks/ # Performance evaluation (planned)
+├── tests/ # Test suite (planned)
+└── documentation/ # Specs, research drafts
+
+---
+
+## Implementation
+
+- Language: Rust
+- Goal: Safety + performance
+- Future: Potential low-level optimization in C
+
+---
+
+## Status
+
+🚧 Early-stage research prototype  
+🧪 Not security-audited  
+📚 Intended for experimentation and exploration
+
+---
+
+## License
+
+MIT
