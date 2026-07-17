@@ -9,6 +9,7 @@ sha3 = "0.10"
 zeroize = "1"
 criterion = "0.4"
 blake2 = "0.10.6"
+subtle = "2.6.1"
 
 [[bench]]
 name = "grig_bench"
@@ -16,3 +17,4 @@ harness = false
 
 [dev-dependencies]
 criterion = { version = "0.4", features = ["html_reports"] }
+hex = "0.4"
