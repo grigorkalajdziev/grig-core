@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-labelledby="title desc">
+<title id="title">Grig dynamic memory graph concept</title><desc id="desc">A dark green abstract network of interconnected nodes representing evolving memory dependencies.</desc>
+<defs><radialGradient id="bg"><stop offset="0" stop-color="#06291f"/><stop offset="1" stop-color="#020807"/></radialGradient><filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<rect width="1200" height="660" fill="url(#bg)"/>
+<g stroke="#00c98b" stroke-opacity=".34" stroke-width="1.7" fill="none">
+<path d="M90 190 210 105 360 150 505 90 650 165 800 110 960 180 1100 95 M90 190 170 390 310 300 455 420 610 300 770 410 930 300 1100 430 M170 390 210 105 310 300 360 150 455 420 505 90 610 300 650 165 770 410 800 110 930 300 960 180 1100 430 1100 95 M90 190 310 300 650 165 930 300 1100 95 M170 390 455 420 770 410 1100 430 M210 105 610 300 960 180 M360 150 770 410 1100 430"/>
+<path d="M90 190 360 150 610 300 960 180 M170 390 310 300 505 90 800 110 930 300 1100 430" stroke-opacity=".18"/>
+</g>
+<g fill="#00e6a0" filter="url(#glow)">
+<circle cx="90" cy="190" r="7"/><circle cx="210" cy="105" r="12"/><circle cx="360" cy="150" r="8"/><circle cx="505" cy="90" r="10"/><circle cx="650" cy="165" r="9"/><circle cx="800" cy="110" r="7"/><circle cx="960" cy="180" r="11"/><circle cx="1100" cy="95" r="6"/><circle cx="170" cy="390" r="9"/><circle cx="310" cy="300" r="12"/><circle cx="455" cy="420" r="8"/><circle cx="610" cy="300" r="13"/><circle cx="770" cy="410" r="9"/><circle cx="930" cy="300" r="11"/><circle cx="1100" cy="430" r="10"/>
+</g>
+<g fill="#42ffc0" opacity=".55">
+<circle cx="130" cy="290" r="3"/><circle cx="260" cy="220" r="3"/><circle cx="400" cy="255" r="4"/><circle cx="560" cy="210" r="3"/><circle cx="700" cy="280" r="3"/><circle cx="850" cy="240" r="4"/><circle cx="1030" cy="330" r="3"/><circle cx="250" cy="500" r="3"/><circle cx="540" cy="520" r="4"/><circle cx="880" cy="520" r="3"/><circle cx="1020" cy="570" r="3"/>
+</g></svg>
