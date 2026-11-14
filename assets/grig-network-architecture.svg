@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-labelledby="title desc">
+  <title id="title">Grig dynamic memory graph concept</title>
+  <desc id="desc">An abstract network of connected memory nodes glowing in green on a dark background.</desc>
+  <defs>
+    <radialGradient id="bg"><stop offset="0" stop-color="#06251b"/><stop offset="1" stop-color="#020807"/></radialGradient>
+    <radialGradient id="glow"><stop offset="0" stop-color="#00ffad" stop-opacity=".25"/><stop offset="1" stop-color="#00ffad" stop-opacity="0"/></radialGradient>
+    <filter id="blur"><feGaussianBlur stdDeviation="12"/></filter>
+    <filter id="shine"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="1200" height="640" rx="30" fill="url(#bg)"/>
+  <ellipse cx="590" cy="320" rx="480" ry="260" fill="url(#glow)"/>
+  <g fill="none" stroke="#00d995" stroke-opacity=".34" stroke-width="2">
+    <path d="M110 180 270 95 420 145 565 80 720 155 885 95 1080 185 990 400 840 510 650 555 475 480 300 535 145 390Z"/>
+    <path d="M110 180 300 535M110 180 420 145M110 180 475 480M270 95 565 80M270 95 475 480M420 145 720 155M420 145 650 555M565 80 885 95M565 80 840 510M720 155 1080 185M720 155 990 400M885 95 840 510M1080 185 840 510M990 400 650 555M145 390 420 145M145 390 720 155M300 535 650 555M475 480 990 400"/>
+    <path d="M270 95 720 155 990 400 475 480 270 95M420 145 885 95 650 555 145 390 420 145" stroke-opacity=".2"/>
+  </g>
+  <g fill="#00e9a0" fill-opacity=".45">
+    <circle cx="190" cy="285" r="3"/><circle cx="350" cy="230" r="4"/><circle cx="510" cy="260" r="3"/><circle cx="630" cy="330" r="4"/><circle cx="790" cy="260" r="3"/><circle cx="930" cy="300" r="4"/><circle cx="750" cy="430" r="3"/><circle cx="550" cy="410" r="3"/><circle cx="350" cy="410" r="3"/><circle cx="1030" cy="270" r="2"/><circle cx="210" cy="430" r="2"/><circle cx="870" cy="170" r="2"/>
+  </g>
+  <g fill="#00ffad" filter="url(#shine)">
+    <circle cx="110" cy="180" r="9"/><circle cx="270" cy="95" r="13"/><circle cx="420" cy="145" r="10"/><circle cx="565" cy="80" r="8"/><circle cx="720" cy="155" r="12"/><circle cx="885" cy="95" r="9"/><circle cx="1080" cy="185" r="11"/><circle cx="990" cy="400" r="12"/><circle cx="840" cy="510" r="9"/><circle cx="650" cy="555" r="11"/><circle cx="475" cy="480" r="10"/><circle cx="300" cy="535" r="8"/><circle cx="145" cy="390" r="10"/>
+  </g>
+  <g fill="#00ffad" opacity=".08" filter="url(#blur)">
+    <circle cx="270" cy="95" r="45"/><circle cx="720" cy="155" r="48"/><circle cx="990" cy="400" r="48"/><circle cx="475" cy="480" r="45"/>
+  </g>
+</svg>
