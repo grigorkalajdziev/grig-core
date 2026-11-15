@@ -21,7 +21,7 @@ fn test_known_vector() {
     let expected_hex = "7dc0e98c2e0cfaceb04fd388279f3e2f0ba5a84996cccfeae6c77b87cf379a671c8dedcbe60c70b14ad23531a380a713f783f61af22f486adb32c92872bf9a68";
     let expected = hex::decode(expected_hex).unwrap();
 
-    println!("{:x?}", hash); 
+    println!("{:x?}", hash);
 
     assert_eq!(hash, expected);
 }
@@ -57,8 +57,16 @@ use crate::core::{engine::Engine, params::Params};
 
 #[test]
 fn test_param_changes_output() {
-    let p1 = Params { blocks: 512, rounds: 2, parents: 4 };
-    let p2 = Params { blocks: 4096, rounds: 6, parents: 6 };
+    let p1 = Params {
+        blocks: 512,
+        rounds: 2,
+        parents: 4,
+    };
+    let p2 = Params {
+        blocks: 4096,
+        rounds: 6,
+        parents: 6,
+    };
 
     let e1 = Engine::new(p1);
     let e2 = Engine::new(p2);
