@@ -5,6 +5,5 @@ pub mod graph;
 pub mod memory;
 pub mod security;
 
-
 #[cfg(test)]
 mod tests;
