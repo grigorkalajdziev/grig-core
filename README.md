@@ -1,162 +1,62 @@
-# Grig (Research Prototype)
+# Grig
 
-⚠️ **WARNING:**  
-This is a research prototype and MUST NOT be used in production systems.  
-It has NOT been cryptographically reviewed, formally analyzed, or tested against real attackers.
+**Experimental research into memory-hard password hashing and dynamic memory-dependency graphs.**
 
----
+> [!WARNING]
+> Grig is a research prototype. It is not suitable for production password storage or protection of sensitive data. It has not received independent cryptographic review, formal security analysis, or adversarial testing. Use a reviewed password-hashing scheme such as Argon2id for real systems.
 
-## Overview
+![Grig dynamic memory graph concept](assets/grig-network-architecture.svg)
 
-Grig is an experimental framework for a next-generation **memory-hard function (MHF)** designed for password hashing.
+## Research direction
 
-It explores a novel direction:
-- Dynamic, state-dependent memory graphs
-- Hidden logical dependencies
-- Reduced observable memory access leakage
+Grig explores whether a memory-hard construction can use evolving, state-dependent logical dependencies while reducing information exposed by physical memory-access patterns.
 
-Modern designs like Argon2id provide strong security, but a fundamental tension remains:
+The central research question is whether logical dependency selection can be meaningfully decoupled from observable physical memory access without undermining memory hardness. This is a hypothesis to investigate, not an established security property.
 
-> Data-dependent access (strong hardness) vs. data-independent access (side-channel safety)
+## Long-term architecture goals
 
-Grig attempts to partially decouple these properties.
+- **Rust cryptographic core** with a small, auditable implementation surface.
+- **Precise construction specification** defining inputs, state transitions, graph generation, memory layout, output encoding, and parameter constraints.
+- **Dynamic dependency graph** with explicit analysis of dependency reachability and graph evolution.
+- **Side-channel threat analysis** that distinguishes address-trace leakage from timing, cache, power, and other channels.
+- **Configurable resource parameters** for memory cost, passes, and parallelism, with safe bounded validation.
+- **Memory safety and secret handling**, including checked arithmetic, allocation limits, and deliberate zeroization.
+- **Reproducible test vectors** and cross-platform deterministic behavior.
+- **Adversarial evaluation** against GPU/ASIC strategies and time-memory trade-offs.
+- **Independent cryptographic review** before any production claim.
 
----
+These are development goals, not features or security guarantees already achieved.
 
-## Threat Model
+## Threat model under investigation
 
-Grig assumes an adversary with:
+The intended research adversary may know the complete algorithm, perform offline password guessing, use GPU/ASIC resources, and observe memory-access patterns. Physical attacks, fault injection, and microarchitectural attacks are currently outside the stated scope. The threat model must be refined before security claims can be made.
 
-- Full knowledge of the algorithm
-- Ability to perform offline password guessing
-- Access to GPU / ASIC acceleration
-- Capability to observe memory access patterns (side-channel attacker)
+## Current implementation
 
-Out of scope:
+The Rust implementation is early-stage. The current API, graph construction, memory initialization, parameter handling, and cryptographic composition require further review. In particular, the demonstration in `src/main.rs` uses Rust's `DefaultHasher`; it is not a cryptographic password hash and must never be used as one.
 
-- Physical attacks
-- Fault injection
-- Microarchitectural exploits (e.g. speculative execution)
+## Development checks
 
----
+The repository includes a GitHub Actions workflow that checks formatting, runs Clippy, and executes the Rust test suite on pushes and pull requests.
 
-## Design Goals
+Run the same checks locally:
 
-- Strong memory hardness
-- Dynamic dependency evolution
-- Reduced observable leakage
-- Resistance to GPU / ASIC optimizations
-- Mitigation of time-memory tradeoffs (TMTO)
+```bash
+cargo fmt --all -- --check
+cargo clippy --all-targets --all-features -- -D warnings
+cargo test --all-targets --all-features
+```
 
----
+## Benchmarks
 
-## Architecture
-
-The computation is modeled as a dynamic directed graph:
-
-G = (V, E)
-
-Where:
-- V = memory blocks
-- E = cryptographic dependencies
-
-Graph evolution:
-
-G(t+1) = F(G(t), S(t))
-
----
-
-## Core Components
-
-- **Memory Block** – Fixed-size memory unit
-- **State** – Internal evolving cryptographic state
-- **Graph** – Generates dynamic dependencies
-- **Mixer** – Combines parent blocks + state
-- **Permutation Layer** – Obfuscates observable memory access patterns
-
----
-
-## Algorithm (Simplified)
-
-S0 = H(password || salt || params)
-
-for t in rounds:
-parents = Graph.select(S_t)
-block = Mixer(parents, S_t)
-memory[i] = block
-S_t+1 = update(S_t, block)
-
-output = Finalize(S)
-
-## Key Idea
-
-Grig separates:
-
-- Logical dependency graph (hidden)
-- Physical memory access pattern (observable)
-
-Goal:
-
-> Preserve memory hardness while reducing leakage from access patterns
-
----
-
-## Comparison
-
-| Property | Argon2id | Grig |
-|--------|--------|------|
-| Memory-hard | ✅ | ✅ |
-| Data-dependent | Partial | Dynamic |
-| Side-channel resistance | Medium | Targeted |
-| Graph evolution | Static | Dynamic |
-
-## Performance Benchmarks
-
-The `grig_hash` function has been benchmarked with 1024 blocks and 3 rounds.
-
-### Current Metrics
-![Performance Metrics](assets/grig_hash_results.png)
-
-| Metric | Estimate | Interval (Lower / Upper Bound) |
-| :--- | :--- | :--- |
-| **Mean** | 6.4066 ms | 6.2532 ms / 6.5957 ms |
-| **Median** | 6.1860 ms | 6.1234 ms / 6.2458 ms |
-| **Std. Dev.** | 885.58 µs | 434.12 µs / 1.2541 ms |
-
-### Comparison to Previous Run
-![Comparison](assets/grig_hash_results2.png)
-
-🚀 **Performance has improved significantly!** 
-The current run shows a performance improvement of **-22.577%** ($p = 0.00 < 0.05$) compared to the previous benchmark. 
-
-*Benchmarks were generated using [Criterion.rs](https://github.com/bheisler/criterion.rs).*
-
----
-
-## Repository Structure
-grig/
-├── grig-core/ # Core Rust hashing implementation
-├── benchmarks/ # Performance evaluation (planned)
-├── tests/ # Test suite (planned)
-└── documentation/ # Specs, research drafts
-
----
-
-## Implementation
-
-- Language: Rust
-- Goal: Safety + performance
-- Future: Potential low-level optimization in C
-
----
+Criterion.rs is used for performance experiments. Benchmark results are meaningful only when accompanied by the exact source revision, hardware, operating system, compiler version, parameters, and benchmark procedure. Performance alone does not establish memory hardness or cryptographic security.
 
 ## Status
 
-🚧 Early-stage research prototype  
-🧪 Not security-audited  
-📚 Intended for experimentation and exploration
-
----
+- Early-stage research prototype
+- Not security-audited
+- Not production-ready
+- Intended for experimentation and cryptographic research
 
 ## License
 

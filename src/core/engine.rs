@@ -26,8 +26,7 @@ impl Engine {
             for i in 0..self.params.blocks {
                 let parent_idx = graph.select(i, state.as_bytes(), self.params.blocks);
 
-                let inputs: Vec<&[u8]> =
-                    parent_idx.iter().map(|&p| memory.get(p)).collect();
+                let inputs: Vec<&[u8]> = parent_idx.iter().map(|&p| memory.get(p)).collect();
 
                 let block = mixer::mix(&inputs, state.as_bytes(), i);
 
